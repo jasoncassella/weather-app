@@ -59,6 +59,7 @@ function displayData(data) {
 	humidity.textContent = `Humidity: ${data.main.humidity}%`;
 	wind.textContent = `Wind Speed: ${data.wind.speed} mph`;
 	icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+	document.body.style.backgroundImage = `url('https://source.unsplash.com/1600x900/?${data.name}')`;
 }
 
 function kToF(kelvin) {
