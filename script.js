@@ -30,11 +30,11 @@ function wtf(err) {
 async function getData(lat, lon) {
   const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=1b79796dec5e64eab2d6444105641fe3`);
   const data = await response.json();
-  console.log(data);
   displayData(data);
 }
 
 function displayData(data) {
+  console.log(data);
   heading1.textContent = `It is ${kToF(data.main.temp)} degrees.`;
   heading4.textContent = `It will reach ${kToF(data.main.temp_max)} and go as low as ${kToF(data.main.temp_min)} today.`;
 }
