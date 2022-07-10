@@ -1,44 +1,61 @@
-const heading1 = document.querySelector('h1');
-const heading4 = document.querySelector('h4');
+const city = document.querySelector('.city');
+const temp = document.querySelector('.temp');
+const description = document.querySelector('.description');
+const humidity = document.querySelector('.humidity');
+const wind = document.querySelector('.wind');
+const button = document.querySelector('button');
+const search = document.querySelector('input');
 
 function init() {
-  getLocation();
+	getCurrentLocation();
 }
 
-function getLocation() {
-  let options = {
-    enableHighAccuracy: true,
-    timeout: 1000 * 10, // 10 seconds
-    maximumAge: 1000 * 60 * 5 // 5 minutes
-  };
-  navigator.geolocation.getCurrentPosition(success, failure, options);
+button.addEventListener('click', getLocation);
+
+function getCurrentLocation() {
+	let options = {
+		enableHighAccuracy: true,
+		timeout: 1000 * 10, // 10 seconds
+		maximumAge: 1000 * 60 * 5 // 5 minutes
+	};
+	navigator.geolocation.getCurrentPosition(success, failure, options);
+}
+
+async function getLocation() {
+	if (!search.value) return;
+	const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search.value}&appid=1b79796dec5e64eab2d6444105641fe3`);
+	const data = await response.json();
+	displayData(data)
 }
 
 function success(position) {
-  const lat = position.coords.latitude.toFixed(2);
-  const lon = position.coords.longitude.toFixed(2);
-  getData(lat, lon);
+	const lat = position.coords.latitude.toFixed(2);
+	const lon = position.coords.longitude.toFixed(2);
+	getData(lat, lon);
 }
 
 function failure(err) {
-  console.error(err);
+	console.error(err);
 }
 
 async function getData(lat, lon) {
-  const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=1b79796dec5e64eab2d6444105641fe3`);
-  const data = await response.json();
-  displayData(data);
+	const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=1b79796dec5e64eab2d6444105641fe3`);
+	const data = await response.json();
+	displayData(data);
 }
 
 function displayData(data) {
-  console.log(data);
-  heading1.textContent = `It is ${kToF(data.main.temp)} degrees.`;
-  heading4.textContent = `It will reach ${kToF(data.main.temp_max)} and go as low as ${kToF(data.main.temp_min)} today.`;
+	console.log(data);
+	city.textContent = `Weather in ${data.name}`;
+	temp.textContent = `${kToF(data.main.temp)}°F`;
+	description.textContent = data.weather[0].description;
+	humidity.textContent = `Humidity: ${data.main.humidity}%`;
+	wind.textContent = `Wind Speed: ${data.wind.speed} mph`;
 }
 
 function kToF(kelvin) {
-  const temperature = (((kelvin - 273.15) * 9) / 5) + 32;
-  return temperature.toFixed(0);
+	const temperature = (((kelvin - 273.15) * 9) / 5) + 32;
+	return temperature.toFixed(0);
 }
 
 init();
