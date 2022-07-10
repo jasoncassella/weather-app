@@ -1,29 +1,26 @@
 const heading1 = document.querySelector('h1');
 const heading4 = document.querySelector('h4');
-const heading6 = document.querySelector('h6');
 
 function init() {
   getLocation();
 }
 
 function getLocation() {
-  let opts = {
+  let options = {
     enableHighAccuracy: true,
     timeout: 1000 * 10, // 10 seconds
     maximumAge: 1000 * 60 * 5 // 5 minutes
   };
-  navigator.geolocation.getCurrentPosition(ftw, wtf, opts);
+  navigator.geolocation.getCurrentPosition(success, failure, options);
 }
 
-function ftw(position) {
-  // geolocation success
+function success(position) {
   const lat = position.coords.latitude.toFixed(2);
   const lon = position.coords.longitude.toFixed(2);
   getData(lat, lon);
 }
 
-function wtf(err) {
-  // geolocation fail
+function failure(err) {
   console.error(err);
 }
 
