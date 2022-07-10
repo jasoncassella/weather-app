@@ -37,7 +37,6 @@ async function getData(lat, lon) {
 function displayData(data) {
   heading1.textContent = `It is ${kToF(data.main.temp)} degrees.`;
   heading4.textContent = `It will reach ${kToF(data.main.temp_max)} and go as low as ${kToF(data.main.temp_min)} today.`;
-
 }
 
 function kToF(kelvin) {
