@@ -31,7 +31,7 @@ function getCurrentLocation() {
 async function getLocation() {
 	try {
 		if (!search.value) return;
-		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search.value}&appid=1b79796dec5e64eab2d6444105641fe3`);
+		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search.value}&appid=1b79796dec5e64eab2d6444105641fe3&units=imperial`);
 		const data = await response.json();
 		displayData(data);
 	} catch (error) {
@@ -51,7 +51,7 @@ function failure(err) {
 
 async function getData(lat, lon) {
 	try {
-		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=1b79796dec5e64eab2d6444105641fe3`);
+		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=1b79796dec5e64eab2d6444105641fe3&units=imperial`);
 		const data = await response.json();
 		displayData(data);
 	} catch (error) {
@@ -62,17 +62,12 @@ async function getData(lat, lon) {
 function displayData(data) {
 	console.log(data);
 	city.textContent = `Weather in ${data.name}`;
-	temp.textContent = `${kToF(data.main.temp)}°F`;
+	temp.textContent = `${data.main.temp.toFixed(0)}°F`;
 	description.textContent = data.weather[0].description;
 	humidity.textContent = `Humidity: ${data.main.humidity}%`;
 	wind.textContent = `Wind Speed: ${data.wind.speed} mph`;
 	icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
 	document.body.style.backgroundImage = `url('https://source.unsplash.com/1600x900/?${data.name}')`;
-}
-
-function kToF(kelvin) {
-	const temperature = (((kelvin - 273.15) * 9) / 5) + 32;
-	return temperature.toFixed(0);
 }
 
 init();
