@@ -29,10 +29,14 @@ function getCurrentLocation() {
 }
 
 async function getLocation() {
-	if (!search.value) return;
-	const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search.value}&appid=1b79796dec5e64eab2d6444105641fe3`);
-	const data = await response.json();
-	displayData(data);
+	try {
+		if (!search.value) return;
+		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search.value}&appid=1b79796dec5e64eab2d6444105641fe3`);
+		const data = await response.json();
+		displayData(data);
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 function success(position) {
@@ -46,9 +50,13 @@ function failure(err) {
 }
 
 async function getData(lat, lon) {
-	const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=1b79796dec5e64eab2d6444105641fe3`);
-	const data = await response.json();
-	displayData(data);
+	try {
+		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=1b79796dec5e64eab2d6444105641fe3`);
+		const data = await response.json();
+		displayData(data);
+	} catch (error) {
+		console.error(err);
+	}
 }
 
 function displayData(data) {
